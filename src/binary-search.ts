@@ -1,27 +1,27 @@
 import { getSortedList } from "./get-sorted-list";
 import { List, ListElement } from "./types";
 
-// get rid of the slice so the performance goes higher
-function binarySearch(list: List, target: ListElement) {
-  if (!list.length) throw new Error("List is empty.");
+function binarySearch(list: List, target: ListElement, min: number, high: number) {
+  if (!list.length) throw new Error("Empty list.");
   if (list.length == 1) {
-    if (list[0] == target) return list[0];
-    throw new Error("Target not found.");
+    if (list[0] != target) throw new Error("Target not found.");
+    return list[0];
   }
 
-  const middleIndex = Math.floor(list.length / 2);
-  const currentValue = list[middleIndex];
+  if (high >= min) {
+    const mid = Math.floor((high - min) / 2) + min;
+    const element = list[mid];
 
-  if (currentValue == target) return currentValue;
-  if (currentValue > target) {
-    return binarySearch(list.slice(0, middleIndex + 1), target);
+    if (element == target) return mid;
+    if (element > target) return binarySearch(list, target, min, mid - 1);
+    return binarySearch(list, target, mid + 1, high);
   }
 
-  return binarySearch(list.slice(middleIndex), target);
+  return -1;
 }
 
-const list = getSortedList(1_000_000);
+const list = getSortedList(10_000_000);
 console.time("binary-search");
-const target = binarySearch(list, 670_351);
+const target = binarySearch(list, 7_531_277, 0, list.length - 1);
 console.timeEnd("binary-search");
 console.log(target);
