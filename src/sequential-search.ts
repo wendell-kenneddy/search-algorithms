@@ -20,8 +20,8 @@ function sequentialSearch(list: List, target: ListElement) {
   return currentValue;
 }
 
-const list = getSortedList(1_000_000);
-console.time("binary-search");
-const target = sequentialSearch(list, 670_351);
-console.timeEnd("binary-search");
+const list = getSortedList(10_000_000);
+console.time("sequential-search");
+const target = sequentialSearch(list, 7_531_277);
+console.timeEnd("sequential-search");
 console.log(target);
